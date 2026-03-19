@@ -1,6 +1,7 @@
+import CarsPage from "./components/CarsPage";
+import Home from "./components/Home";
 import LogIn from "./components/LogIn";
 import Welcome from "./components/Welcome";
-import Home from "./components/Home";
 
 const routes = [
     {
@@ -13,6 +14,12 @@ const routes = [
        path: "/auth",
         element: (<Home>
             <LogIn></LogIn>
+        </Home>), 
+    },
+    {
+       path: "/cars",
+        element: (<Home>
+            <CarsPage></CarsPage>
         </Home>), 
     }
 ]
