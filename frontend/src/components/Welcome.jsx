@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import dealershipImage from '../assets/dealership.jpg';
+import '../css/welcome.css';
 
 function Welcome() {
     const navigate = useNavigate();

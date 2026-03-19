@@ -1,9 +1,10 @@
-import './index.css'
-import routes from './routes'
+import { useContext } from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router'
 import { AuthContext, AuthContextProvider } from './context/AuthContext'
-import { useContext} from 'react'
 import { UserContext, UserContextProvider } from './context/UserContext'
+import './css/styles.css'
+import './index.css'
+import routes from './routes'
 
 function App() {
   const user = useContext(AuthContext);
