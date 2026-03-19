@@ -8,7 +8,7 @@ function AddCar({ onCarAdded }) {
   const [status, setStatus] = useState("Available");
 
   async function handleSubmit() {
-    await fetch("http://localhost:3000/api/cars", {
+    await fetch("https://car-management-x6us.onrender.com/api/cars", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
