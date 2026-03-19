@@ -80,7 +80,7 @@ Instead of relying on spreadsheets or disconnected tools, this platform centrali
 ## 1. Clone the repository
 
 ```bash
-git clone https://github.com/rohannes220/Car-Management.git
+git clone https://github.com/DanielRJilek/car_management.git
 cd Car-Management
 ```
 
