@@ -15,7 +15,7 @@ function CarsPage() {
 
   async function loadCars() {
     try {
-      const response = await fetch("http://localhost:3000/api/cars");
+      const response = await fetch("https://car-management-x6us.onrender.com/api/cars");
       const data = await response.json();
       setCars(data);
     } catch (error) {
@@ -25,7 +25,7 @@ function CarsPage() {
 
   async function deleteCar(carId) {
     try {
-      await fetch(`http://localhost:3000/api/cars/${carId}`, {
+      await fetch(`https://car-management-x6us.onrender.com/api/cars/${carId}`, {
         method: "DELETE",
       });
       loadCars();
@@ -58,12 +58,6 @@ function CarsPage() {
 
   return (
     <div>
-      <div className="navbar">
-        <a href="#">Welcome</a>
-        <a href="#">Cars</a>
-        <a href="#">Sales</a>
-      </div>
-
       <div className="inventory-card">
         <h1>Car Inventory</h1>
 
