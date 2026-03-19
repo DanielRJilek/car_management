@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../css/styles.css";
+import "../css/cars.css";
 import AddCar from "./AddCar";
 import UpdateCar from "./UpdateCar";
 
