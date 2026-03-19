@@ -1,0 +1,143 @@
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  background-color: #dcfce7;
+  color: #1f2937;
+}
+
+.navbar {
+  background-color: #166534;
+  padding: 18px;
+  text-align: center;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  margin: 0 25px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.navbar a:hover {
+  color: #bbf7d0;
+}
+
+.main {
+  text-align: center;
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.main p {
+  line-height: 1.7;
+  font-size: 17px;
+}
+
+.hero-image {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.hero-image img {
+  width: 60%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 10px;
+}
+
+.features {
+  max-width: 750px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.features h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.features ul {
+  line-height: 1.9;
+  font-size: 17px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #166534;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #14532d;
+}
+
+.inventory-card {
+  background: white;
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.inventory-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+th {
+  background: #166534;
+  color: white;
+}
+.react-form {
+  margin-top: 20px;
+  margin-bottom: 25px;
+}
+
+.react-form input {
+  padding: 8px;
+  margin-right: 10px;
+}
+
+.react-form button {
+  margin-left: 10px;
+}
+
+.inventory-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+#result {
+  margin-left: 40px;
+  font-weight: 600;
+  color: #166534;
+}
+
+.update-form {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
