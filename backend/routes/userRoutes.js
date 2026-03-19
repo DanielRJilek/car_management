@@ -1,7 +1,12 @@
-const express = require('express');
-const path = require('path');
-const router = express.Router();
+import express from "express";
+import { ObjectId } from "mongodb";
 
-router.route('/')
+export default function userRoutes(db) {
+    const router = express.Router();
 
-module.exports = router;
+    router.get("/", async (req, res) => {
+    const cities = await db.collection("cities").find({}).toArray();
+    res.json(cities);
+  });
+  return router;
+}

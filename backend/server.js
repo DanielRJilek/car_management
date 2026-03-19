@@ -1,15 +1,13 @@
 import dotenv from "dotenv";
 import express from "express";
 import { MongoClient } from "mongodb";
-import carsRoutes from "./routes/car.js";
+import carsRoutes from "./routes/carRoutes.js";
+import salesRoutes from "./routes/salesRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import passport from "passport";
 
-const passport = require('passport')
-const session = require('express-session')
-const bcrypt = require('bcrypt')
+import bcrypt from "bcrypt";
 
-
-const userRouter = require('./routes/userRoutes');
-const salesRouter = require('./routes/salesRoutes.js');
 
 dotenv.config();
 
@@ -37,8 +35,8 @@ async function connectDB() {
 await connectDB();
 
 app.use("/api/cars", carsRoutes(db));
-app.use('/api/auth', userRouter);
-app.use('/api/sales', salesRouter);
+app.use('/api/auth', userRoutes(db));
+app.use('/api/sales', salesRoutes(db));
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
