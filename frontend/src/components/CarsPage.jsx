@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import "../css/cars.css";
 import AddCar from "./AddCar";
 import UpdateCar from "./UpdateCar";
@@ -9,13 +9,23 @@ function CarsPage() {
   const [editingCar, setEditingCar] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
 
+  const CARS_API_URL = "https://car-management-x6us.onrender.com/api/cars";
+
+  function normalizeCarId(id) {
+    if (id && typeof id === "object" && "$oid" in id) {
+      return String(id.$oid);
+    }
+
+    return String(id);
+  }
+
   useEffect(() => {
     loadCars();
   }, []);
 
   async function loadCars() {
     try {
-      const response = await fetch("https://car-management-x6us.onrender.com/api/cars");
+      const response = await fetch(CARS_API_URL);
       const data = await response.json();
       const sortedData = data.reverse();
       setCars(sortedData);
@@ -25,19 +35,21 @@ function CarsPage() {
   }
 
   async function deleteCar(carId) {
+    const targetId = normalizeCarId(carId);
+
+    setCars((prevCars) => prevCars.filter((car) => normalizeCarId(car._id) !== targetId));
+
+    if (editingCar && normalizeCarId(editingCar._id) === targetId) {
+      setEditingCar(null);
+    }
+
     try {
-      const response = await fetch(`https://car-management-x6us.onrender.com/api/cars/${carId}`, {
+      const response = await fetch(`${CARS_API_URL}/${targetId}`, {
         method: "DELETE",
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete car");
-      }
-
-      setCars((prevCars) => prevCars.filter((car) => car._id !== carId));
-
-      if (editingCar && editingCar._id === carId) {
-        setEditingCar(null);
+        console.log("Delete request failed on server");
       }
     } catch (error) {
       console.log("Error deleting car:", error);
@@ -99,8 +111,8 @@ function CarsPage() {
 
           <tbody>
             {cars.map((car) => (
-              <>
-                <tr key={car._id}>
+              <Fragment key={normalizeCarId(car._id)}>
+                <tr>
                   <td>{car.make}</td>
                   <td>{car.model}</td>
                   <td>{car.year}</td>
@@ -115,7 +127,7 @@ function CarsPage() {
                     </button>
                   </td>
                 </tr>
-                {editingCar && editingCar._id === car._id && (
+                {editingCar && normalizeCarId(editingCar._id) === normalizeCarId(car._id) && (
                   <tr>
                     <td colSpan="6">
                       <UpdateCar
@@ -129,7 +141,7 @@ function CarsPage() {
                     </td>
                   </tr>
                 )}
-              </>
+              </Fragment>
             ))}
           </tbody>
         </table>
