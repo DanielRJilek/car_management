@@ -74,6 +74,12 @@ button:hover {
   gap: 16px;
 }
 
+#header .logo {
+  width: 0;
+  height: 0;
+  border: 0;
+}
+
 #header-menu {
   display: flex;
   align-items: center;

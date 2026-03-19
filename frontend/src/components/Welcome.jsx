@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import dealershipImage from '../assets/dealership.jpg';
+import fallbackHeroImage from '../assets/hero.png';
 import '../css/welcome.css';
 
 function Welcome() {
@@ -25,7 +26,16 @@ function Welcome() {
             </div>
 
             <div className='hero-image'>
-                <img src={dealershipImage} alt='Dealership' />
+                <img
+                    src={dealershipImage}
+                    alt='Dealership'
+                    onError={(event) => {
+                        // Prevent infinite loops if fallback also fails.
+                        if (event.currentTarget.src !== fallbackHeroImage) {
+                            event.currentTarget.src = fallbackHeroImage;
+                        }
+                    }}
+                />
             </div>
 
             <div id='login-center'>
