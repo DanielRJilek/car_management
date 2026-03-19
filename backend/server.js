@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import express from "express";
-import { MongoClient } from "mongodb";
 import carsRoutes from "./routes/carRoutes.js";
 import salesRoutes from "./routes/salesRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -14,10 +13,13 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 const client = connectDB();
+app.use((req, res, next) => {
+  next();
+});
 
-app.use("/api/cars", carsRoutes(client.db("WorldCup")));
-app.use('/api/auth', userRoutes(client.db("WorldCup")));
-app.use('/api/sales', salesRoutes(client.db("WorldCup")));
+app.use("/api/cars", carsRoutes(client.db("dev")));
+app.use('/api/auth', userRoutes(client.db("dev")));
+app.use('/api/sales', salesRoutes(client.db("dev")));
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
