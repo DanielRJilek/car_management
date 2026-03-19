@@ -15,9 +15,9 @@ const app = express();
 app.use(express.json());
 const client = connectDB();
 
-app.use("/api/cars", carsRoutes(db));
-app.use('/api/auth', userRoutes(db));
-app.use('/api/sales', salesRoutes(db));
+app.use("/api/cars", carsRoutes(client.db("WorldCup")));
+app.use('/api/auth', userRoutes(client.db("WorldCup")));
+app.use('/api/sales', salesRoutes(client.db("WorldCup")));
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
