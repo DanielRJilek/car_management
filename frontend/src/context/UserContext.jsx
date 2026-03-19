@@ -1,7 +1,7 @@
-import { createContext, useEffect, useState, useContext } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { AuthContext } from '../context/AuthContext';
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = "https://car-management-x6us.onrender.com";
 
 export const UserContext = createContext();
 
@@ -13,7 +13,6 @@ export const UserContextProvider = ({children}) => {
         async function fetchData() {
             try {
                 const response = await fetch(`${API_URL}/users/`, {
-                    // mode: "cors",
                     method:'GET',
                     headers: {  'Authorization': `Bearer ${localStorage.getItem("token")}`,
                                 "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" }, 

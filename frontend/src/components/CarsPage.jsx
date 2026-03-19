@@ -17,7 +17,8 @@ function CarsPage() {
     try {
       const response = await fetch("https://car-management-x6us.onrender.com/api/cars");
       const data = await response.json();
-      setCars(data);
+      const sortedData = data.reverse();
+      setCars(sortedData);
     } catch (error) {
       console.log("Error loading cars:", error);
     }
@@ -25,10 +26,19 @@ function CarsPage() {
 
   async function deleteCar(carId) {
     try {
-      await fetch(`https://car-management-x6us.onrender.com/api/cars/${carId}`, {
+      const response = await fetch(`https://car-management-x6us.onrender.com/api/cars/${carId}`, {
         method: "DELETE",
       });
-      loadCars();
+
+      if (!response.ok) {
+        throw new Error("Failed to delete car");
+      }
+
+      setCars((prevCars) => prevCars.filter((car) => car._id !== carId));
+
+      if (editingCar && editingCar._id === carId) {
+        setEditingCar(null);
+      }
     } catch (error) {
       console.log("Error deleting car:", error);
     }
@@ -75,17 +85,6 @@ function CarsPage() {
           <AddCar onCarAdded={() => { loadCars(); setShowAddForm(false); }} />
         )}
 
-        {editingCar && (
-          <UpdateCar
-            car={editingCar}
-            onCarUpdated={() => {
-              loadCars();
-              setEditingCar(null);
-            }}
-            onCancel={handleCancelUpdate}
-          />
-        )}
-
         <table>
           <thead>
             <tr>
@@ -100,21 +99,37 @@ function CarsPage() {
 
           <tbody>
             {cars.map((car) => (
-              <tr key={car._id}>
-                <td>{car.make}</td>
-                <td>{car.model}</td>
-                <td>{car.year}</td>
-                <td>${car.price}</td>
-                <td>{car.status}</td>
-                <td>
-                  <button onClick={() => handleUpdateCar(car)}>
-                    Update
-                  </button>
-                  <button onClick={() => deleteCar(car._id)}>
-                    Delete
-                  </button>
-                </td>
-              </tr>
+              <>
+                <tr key={car._id}>
+                  <td>{car.make}</td>
+                  <td>{car.model}</td>
+                  <td>{car.year}</td>
+                  <td>${car.price}</td>
+                  <td>{car.status}</td>
+                  <td>
+                    <button onClick={() => handleUpdateCar(car)}>
+                      Update
+                    </button>
+                    <button onClick={() => deleteCar(car._id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+                {editingCar && editingCar._id === car._id && (
+                  <tr>
+                    <td colSpan="6">
+                      <UpdateCar
+                        car={editingCar}
+                        onCarUpdated={() => {
+                          loadCars();
+                          setEditingCar(null);
+                        }}
+                        onCancel={handleCancelUpdate}
+                      />
+                    </td>
+                  </tr>
+                )}
+              </>
             ))}
           </tbody>
         </table>

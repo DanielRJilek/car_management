@@ -8,21 +8,23 @@ function AddCar({ onCarAdded }) {
   const [status, setStatus] = useState("Available");
 
   async function handleSubmit() {
-    await fetch("https://car-management-x6us.onrender.com/api/cars", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ make, model, year, price, status }),
-    });
-
-    setMake("");
-    setModel("");
-    setYear("");
-    setPrice("");
-    setStatus("Available");
-
-    onCarAdded();
+    try {
+      await fetch("https://car-management-x6us.onrender.com/api/cars", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ make, model, year, price, status }),
+      });
+      setMake("");
+      setModel("");
+      setYear("");
+      setPrice("");
+      setStatus("Available");
+      onCarAdded();
+    } catch (error) {
+      console.error("Error adding car:", error);
+    }
   }
 
   return (

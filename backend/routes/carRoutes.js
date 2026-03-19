@@ -4,6 +4,18 @@ import { ObjectId } from "mongodb";
 export default function carsRoutes(db) {
   const router = express.Router();
 
+  function buildIdFilter(id) {
+    if (/^\d+$/.test(id)) {
+      return { _id: Number(id) };
+    }
+
+    if (ObjectId.isValid(id)) {
+      return { _id: new ObjectId(id) };
+    }
+
+    return null;
+  }
+
   router.get("/", async (req, res) => {
     try {
       const cars = await db.collection("cars").find().toArray();
@@ -44,9 +56,14 @@ export default function carsRoutes(db) {
   router.put("/:id", async (req, res) => {
     try {
       const id = req.params.id;
+      const filter = buildIdFilter(id);
+
+      if (!filter) {
+        return res.status(400).json({ error: "Invalid ID" });
+      }
 
       const result = await db.collection("cars").updateOne(
-        { _id: Number(id) },
+        filter,
         {
           $set: {
             make: req.body.make,
@@ -57,6 +74,10 @@ export default function carsRoutes(db) {
           },
         },
       );
+
+      if (result.matchedCount === 0) {
+        return res.status(404).json({ error: "Car not found" });
+      }
 
       res.json(result);
     } catch (error) {
@@ -69,13 +90,13 @@ export default function carsRoutes(db) {
     try {
       const { id } = req.params;
 
-      if (!ObjectId.isValid(id)) {
+      const filter = buildIdFilter(id);
+
+      if (!filter) {
         return res.status(400).json({ error: "Invalid ID" });
       }
 
-      const result = await db.collection("cars").deleteOne({
-        _id: new ObjectId(id),
-      });
+      const result = await db.collection("cars").deleteOne(filter);
 
       if (result.deletedCount === 0) {
         return res.status(404).json({ error: "Car not found" });

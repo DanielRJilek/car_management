@@ -8,25 +8,28 @@ function UpdateCar({ car, onCarUpdated, onCancel }) {
   const [status, setStatus] = useState(car.status);
 
   async function handleUpdate() {
-    await fetch(`http://localhost:3000/api/cars/${car._id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ make, model, year, price, status }),
-    });
-
-    onCarUpdated();
+    try {
+      await fetch(`https://car-management-x6us.onrender.com/api/cars/${car._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ _id: car._id, make, model, year, price, status }),
+      });
+      onCarUpdated();
+    } catch (error) {
+      console.error("Error updating car:", error);
+    }
   }
 
   return (
-    <div>
+    <div className="update-form">
       <h3>Update Car</h3>
 
-      <input value={make} onChange={(e) => setMake(e.target.value)} />
-      <input value={model} onChange={(e) => setModel(e.target.value)} />
-      <input value={year} onChange={(e) => setYear(e.target.value)} />
-      <input value={price} onChange={(e) => setPrice(e.target.value)} />
+      <input placeholder="Make" value={make} onChange={(e) => setMake(e.target.value)} />
+      <input placeholder="Model" value={model} onChange={(e) => setModel(e.target.value)} />
+      <input placeholder="Year" value={year} onChange={(e) => setYear(e.target.value)} />
+      <input placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} />
 
       <select value={status} onChange={(e) => setStatus(e.target.value)}>
         <option>Available</option>
