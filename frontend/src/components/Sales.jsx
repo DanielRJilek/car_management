@@ -1,11 +1,119 @@
+import { Fragment, useEffect, useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import UpdateSale from "./UpdateSale";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Sales() {
+  const [sales, setSales] = useState([]);
+  const [editingSale, setEditingSale] = useState(null);
+  const auth = useContext(AuthContext);
+
+  useEffect(() => {
+    loadSales();
+  }, []);
+
+  async function loadSales() {
+    try {
+      const response = await fetch(`${API_URL}/sales`, {
+        headers: {
+          "Authorization": `Bearer ${auth.accessToken}`
+        }
+      });
+      const data = await response.json();
+      const sortedData = data.reverse();
+      setSales(sortedData);
+    } catch (error) {
+      console.log("Error loading sales:", error);
+    }
+  }
+
+  async function deleteSale(saleId) {
+    try {
+      const response = await fetch(`${API_URL}/sales/${saleId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${auth.accessToken}`
+        }
+      });
+
+      if (!response.ok) {
+        console.log("Delete request failed on server");
+        return;
+      }
+      
+      setSales((prevSales) => prevSales.filter((sale) => sale._id !== saleId));
+      
+      if (editingSale && editingSale._id === saleId) {
+        setEditingSale(null);
+      }
+    } catch (error) {
+      console.log("Error deleting sale:", error);
+    }
+  }
+
+  function handleUpdateSale(sale) {
+    setEditingSale(sale);
+  }
+
+  function handleCancelUpdate() {
+    setEditingSale(null);
+  }
+
   return (
-    <div className="page" id="sales-page">
-      <h2>Sales Management</h2>
-      <p>
-        Here you can review sales statistics, log new sales, and manage sales status.
-        This section is still in progress, but the core inventory is available on the Cars page.
-      </p>
+    <div>
+      <div className="inventory-card">
+        <h1>Sales Management</h1>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Car ID</th>
+              <th>Customer Name</th>
+              <th>Sale Price</th>
+              <th>Salesperson</th>
+              <th>Sale Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {sales.map((sale) => (
+              <Fragment key={sale._id}>
+                <tr>
+                  <td>{sale.car_id}</td>
+                  <td>{sale.customer_name}</td>
+                  <td>${sale.sale_price}</td>
+                  <td>{sale.salesperson}</td>
+                  <td>{new Date(sale.sale_date).toLocaleDateString()}</td>
+                  <td>
+                    <button onClick={() => handleUpdateSale(sale)}>
+                      Update
+                    </button>
+                    <button onClick={() => deleteSale(sale._id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+                {editingSale && editingSale._id === sale._id && (
+                  <tr>
+                    <td colSpan="6">
+                      <UpdateSale
+                        sale={editingSale}
+                        onSaleUpdated={() => {
+                          loadSales();
+                          setEditingSale(null);
+                        }}
+                        onCancel={handleCancelUpdate}
+                      />
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

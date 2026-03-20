@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function UpdateCar({ car, onCarUpdated, onCancel }) {
   const [make, setMake] = useState(car.make);
   const [model, setModel] = useState(car.model);
@@ -9,7 +11,7 @@ function UpdateCar({ car, onCarUpdated, onCancel }) {
 
   async function handleUpdate() {
     try {
-      await fetch(`https://car-management-x6us.onrender.com/api/cars/${car._id}`, {
+      await fetch(`${API_URL}/cars/${car._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

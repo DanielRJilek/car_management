@@ -1,5 +1,6 @@
 import express from "express";
 import * as controller from "../controllers/salesController.js";
+import passport from "../config/passport.js";
 
 export default function salesRoutes(db) {
     const router = express.Router();
@@ -14,13 +15,13 @@ export default function salesRoutes(db) {
     router.get("/car/:carId", controller.getSalesByCarId);
 
     // Create a new sale
-    router.post("/", controller.createSale);
+    router.post("/", passport.authenticate("jwt", { session: false }), controller.createSale);
 
     // Update a sale
-    router.put("/:id", controller.updateSale);
+    router.put("/:id", passport.authenticate("jwt", { session: false }), controller.updateSale);
 
     // Delete a sale
-    router.delete("/:id", controller.deleteSale);
+    router.delete("/:id", passport.authenticate("jwt", { session: false }), controller.deleteSale);
 
     return router;
 }

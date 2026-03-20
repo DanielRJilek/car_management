@@ -30,9 +30,9 @@ function LogIn() {
                 setError(message.message);
             }
             else {
-                const {accessToken, user} = await response.json();
-                user.setUsername(user.name || user.email);
-                user.setUserID(user.id.toString());
+                const {accessToken, user: userData} = await response.json();
+                user.setUsername(userData.username);
+                user.setUserID(userData.id.toString());
                 auth.setAccessToken(accessToken);
                 
                 navigate('/');
