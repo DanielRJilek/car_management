@@ -27,7 +27,7 @@ Instead of relying on spreadsheets or disconnected tools, this platform centrali
 *  **Live App:** *(Add link)*
 *  **Demo Video:** *(Add link)*
 * **Slides:**
-  [https://docs.google.com/presentation/d/1LvLrOHhLtmGReQEMSHt1McX6s0qMD1Y3b5akLm0p9Wc/edit?usp=sharing](g)
+  https://docs.google.com/presentation/d/1LvLrOHhLtmGReQEMSHt1McX6s0qMD1Y3b5akLm0p9Wc/edit?usp=sharing
 * **Design Document:**
   [https://docs.google.com/document/d/1NXgCjUKdv8X7MqSYT4_0Hn3ZCtJRze0rq-wCmTqM0O4/edit?usp=sharing]
 
