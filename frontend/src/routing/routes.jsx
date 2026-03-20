@@ -34,9 +34,12 @@ const routes = [
     {
        path: "/cars",
         element: (
-          <Home>
-            <CarsPage />
-          </Home>
+          <ProtectedRoute>
+            <Home>
+              <CarsPage />
+            </Home>
+          </ProtectedRoute>
+          
         ),
     },
     {

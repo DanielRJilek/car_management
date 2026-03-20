@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import PropTypes from "prop-types";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -99,5 +100,23 @@ function UpdateForm({ title, item, itemId, endpoint, fields, buttonLabel, onSubm
     </div>
   );
 }
+
+UpdateForm.propTypes = {
+  title: PropTypes.string,
+  item: PropTypes.object.isRequired,
+    itemId: PropTypes.string.isRequired,
+    endpoint: PropTypes.string.isRequired,
+    fields: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            type: PropTypes.string.isRequired,
+            placeholder: PropTypes.string,
+            options: PropTypes.arrayOf(PropTypes.string),
+        })
+    ).isRequired,
+    buttonLabel: PropTypes.string.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    requiresAuth: PropTypes.bool,
+};
 
 export default UpdateForm;

@@ -101,4 +101,20 @@ function AddForm({ title, endpoint, fields, buttonLabel, onSubmit, requiresAuth 
   );
 }
 
+AddForm.propTypes = {
+  title: PropTypes.string,
+  endpoint: PropTypes.string.isRequired,   
+    fields: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            type: PropTypes.string.isRequired,
+            placeholder: PropTypes.string,
+            options: PropTypes.arrayOf(PropTypes.string),
+        })
+    ).isRequired,
+    buttonLabel: PropTypes.string.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    requiresAuth: PropTypes.bool,
+};
+
 export default AddForm;

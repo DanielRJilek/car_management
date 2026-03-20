@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router';
 import Logo from './Logo';
 import ProfileDrop from './ProfileDrop';
+import "../css/Header.css";
 
 function Header() {
     const navigate = useNavigate();

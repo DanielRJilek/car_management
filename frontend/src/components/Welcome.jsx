@@ -19,10 +19,14 @@ function Welcome() {
             <div className='welcome-summary-list'>
                 <p><strong>Key operations include:</strong></p>
                 <p>Create new cars</p>
-                <p>Update new sales</p>
+                <p>Update car details</p>
                 <p>Delete cars</p>
-                <p>Read all sales</p>
-                <p>Read all cars</p>
+                <p>View and filter cars</p>
+                <p>Update sales records</p>
+                <p>Delete sales records</p>
+                <p>Create new sales records</p>
+                <p>View and filter sales</p>
+                
             </div>
 
             <div className='hero-image'>
