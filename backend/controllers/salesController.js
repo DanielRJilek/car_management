@@ -19,9 +19,14 @@ export const getSaleById = async (req, res) => {
         const db = getDB();
         const { id } = req.params;
         
-        const sale = await db.collection("sales").findOne({ 
-            _id: new ObjectId(id) 
-        });
+        let filter;
+        try {
+            filter = { _id: new ObjectId(id) };
+        } catch (e) {
+            filter = { _id: id };
+        }
+        
+        const sale = await db.collection("sales").findOne(filter);
         
         if (!sale) {
             return res.status(404).json({ message: "Sale not found" });
@@ -96,8 +101,15 @@ export const updateSale = async (req, res) => {
         if (updateData.car_id) updateData.car_id = Number(updateData.car_id);
         if (updateData.sale_price) updateData.sale_price = Number(updateData.sale_price);
         
+        let filter;
+        try {
+            filter = { _id: new ObjectId(id) };
+        } catch (e) {
+            filter = { _id: id };
+        }
+        
         const result = await db.collection("sales").updateOne(
-            { _id: new ObjectId(id) },
+            filter,
             { $set: updateData }
         );
         
@@ -114,6 +126,12 @@ export const updateSale = async (req, res) => {
         res.status(500).json({ message: "Error updating sale", error: err });
     }
 };
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Error updating sale", error: err });
+    }
+};
 
 // Delete a sale
 export const deleteSale = async (req, res) => {
@@ -121,9 +139,14 @@ export const deleteSale = async (req, res) => {
         const db = getDB();
         const { id } = req.params;
         
-        const result = await db.collection("sales").deleteOne({ 
-            _id: new ObjectId(id) 
-        });
+        let filter;
+        try {
+            filter = { _id: new ObjectId(id) };
+        } catch (e) {
+            filter = { _id: id };
+        }
+        
+        const result = await db.collection("sales").deleteOne(filter);
         
         if (result.deletedCount === 0) {
             return res.status(404).json({ message: "Sale not found" });

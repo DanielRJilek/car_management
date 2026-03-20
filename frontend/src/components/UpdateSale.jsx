@@ -14,7 +14,6 @@ function UpdateSale({ sale, onSaleUpdated, onCancel }) {
   async function handleUpdate() {
     try {
       const token = auth.accessToken;
-      console.log("Auth token for update:", token);
       
       const response = await fetch(`${API_URL}/sales/${sale._id}`, {
         method: "PUT",

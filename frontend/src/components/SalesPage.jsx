@@ -18,8 +18,6 @@ function SalesPage() {
   async function loadSales() {
     try {
       const token = auth.accessToken;
-      console.log("Loading sales with token:", token);
-      
       const response = await fetch(`${API_URL}/sales`, {
         headers: {
           "Authorization": `Bearer ${token}`
@@ -36,8 +34,6 @@ function SalesPage() {
   async function deleteSale(saleId) {
     try {
       const token = auth.accessToken;
-      console.log("Auth token being sent:", token);
-      
       const response = await fetch(`${API_URL}/sales/${saleId}`, {
         method: "DELETE",
         headers: {
