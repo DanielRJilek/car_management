@@ -39,10 +39,33 @@ export const getMyData = (async (req,res) => {
 export const createUser = async (req, res) => {
     try {
         let db = getDB();
-        const newUser = req.body;
-        await db.collection("users").insertOne(newUser);        
-        res.json({ message: "User created successfully" });
+        const { username, password1, password2 } = req.body;
+        
+        // Validate required fields
+        if (!username || !password1 || !password2) {
+            return res.status(400).json({ message: "Missing required fields: username, password1, password2" });
+        }
+        
+        // Validate passwords match
+        if (password1 !== password2) {
+            return res.status(400).json({ message: "Passwords do not match" });
+        }
+        
+        // Check if user already exists
+        const existingUser = await db.collection("users").findOne({ username });
+        if (existingUser) {
+            return res.status(409).json({ message: "Username already exists" });
+        }
+        
+        const newUser = { username, password1, password2, createdAt: new Date() };
+        const result = await db.collection("users").insertOne(newUser);
+        
+        res.status(201).json({ 
+            message: "User created successfully",
+            userId: result.insertedId 
+        });
     } catch (err) {
         console.log(err);
+        res.status(500).json({ message: "Error creating user", error: err.message });
     }   
 }
