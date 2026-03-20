@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import Logo from './Logo';
+import ProfileDrop from './ProfileDrop';
 
 function Header() {
     const navigate = useNavigate();
@@ -10,6 +11,7 @@ function Header() {
                 <button onClick={() => navigate('/')}>Home</button>
                 <button onClick={() => navigate('/cars')}>Cars</button>
                 <button onClick={() => navigate('/sales')}>Sales</button>
+                <ProfileDrop />
             </div>
         </div>
     );

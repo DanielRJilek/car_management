@@ -147,8 +147,7 @@ export const signup = async (req, res) => {
             refreshToken,
             user: {
                 id: result.insertedId,
-                email,
-                name,
+                username,
             },
         });
     } catch (error) {
