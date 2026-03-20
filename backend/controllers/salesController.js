@@ -23,7 +23,9 @@ export const getSaleById = async (req, res) => {
         try {
             filter = { _id: new ObjectId(id) };
         } catch (e) {
-            filter = { _id: id };
+            // Try as number, then as string
+            const numId = Number(id);
+            filter = isNaN(numId) ? { _id: id } : { _id: numId };
         }
         
         const sale = await db.collection("sales").findOne(filter);
@@ -105,7 +107,9 @@ export const updateSale = async (req, res) => {
         try {
             filter = { _id: new ObjectId(id) };
         } catch (e) {
-            filter = { _id: id };
+            // Try as number, then as string
+            const numId = Number(id);
+            filter = isNaN(numId) ? { _id: id } : { _id: numId };
         }
         
         const result = await db.collection("sales").updateOne(
@@ -135,7 +139,9 @@ export const deleteSale = async (req, res) => {
         
         let filter;
         try {
-            filter = { _id: new ObjectId(id) };
+            // Try as number, then as string
+            const numId = Number(id);
+            filter = isNaN(numId) ? { _id: id } : { _id: numIew ObjectId(id) };
         } catch (e) {
             filter = { _id: id };
         }
