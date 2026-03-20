@@ -21,7 +21,14 @@ Instead of relying on spreadsheets or disconnected tools, this platform centrali
 * Maintain accurate, real-time dealership data
 
 ---
+#  Directions
+1. Click the login button on the far right.
+2. Create an account with a username and password (be sure to save it)
+3. After account is created you are in and can access the database!
+4. Toggle between each page to access a specific part either cars or sales
+5. Play around with each feature to see the interactive UI 
 
+---
 #  Links
 
 *  **Live App:** https://car-management-1-dx93.onrender.com
