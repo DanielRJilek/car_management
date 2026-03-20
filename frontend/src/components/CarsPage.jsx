@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import "../css/cars.css";
+import "../css/Page.css";
 import AddForm from "./AddForm";
 import UpdateForm from "./UpdateForm";
 

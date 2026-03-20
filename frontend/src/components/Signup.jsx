@@ -51,7 +51,7 @@ function SignUp() {
             user.setUsername(userData.username);
             user.setUserID(userData.id.toString());
             auth.setAccessToken(accessToken);
-            navigate('/');
+            navigate('/cars');
         } 
         catch (error) {
             console.log(error);

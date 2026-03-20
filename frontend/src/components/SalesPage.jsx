@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import UpdateForm from "./UpdateForm";
 import AddForm from "./AddForm";
+import "../css/Page.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 

@@ -59,6 +59,7 @@ button {
   background-color: #166534;
   color: white;
   cursor: pointer;
+  margin: 5px;
 }
 
 button:hover {

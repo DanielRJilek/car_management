@@ -14,9 +14,7 @@ function App() {
   return (
     <AuthContextProvider value={user}>
       <UserContextProvider value={username}>
-        <RouterProvider router={router}>
-          <App/>
-      </RouterProvider>
+        <RouterProvider router={router} />
       </UserContextProvider>
     </AuthContextProvider>
   )

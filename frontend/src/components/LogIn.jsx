@@ -35,7 +35,7 @@ function LogIn() {
                 user.setUserID(userData.id.toString());
                 auth.setAccessToken(accessToken);
                 
-                navigate('/');
+                navigate('/cars');
             }
         } 
         catch (error) {
