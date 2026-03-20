@@ -74,7 +74,7 @@ function SignUp() {
                 <button type="submit">Create an account</button>
                 <div>
                     <span>Already have an account? </span>
-                    <a href='/login'>Login</a>
+                    <a href='/auth'>Login</a>
                 </div>
                 
                 <div className='error'>

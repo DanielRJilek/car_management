@@ -3,7 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router'
 import { AuthContext, AuthContextProvider } from './context/AuthContext'
 import { UserContext, UserContextProvider } from './context/UserContext'
 import './css/styles.css'
-import './index.css'
+import './css/index.css'
 import routes from './routing/routes'
 
 function App() {
