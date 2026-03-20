@@ -146,9 +146,25 @@ export const signup = async (req, res) => {
 
         const result = await db.collection("users").insertOne(newUser);
 
+        // Generate tokens for immediate login
+        const accessToken = generateToken(result.insertedId);
+        const refreshToken = generateRefreshToken(result.insertedId);
+
+        // Store refresh token in database
+        await db.collection("users").updateOne(
+            { _id: result.insertedId },
+            { $set: { refreshToken } }
+        );
+
         res.status(201).json({
             message: "User created successfully",
-            userId: result.insertedId,
+            accessToken,
+            refreshToken,
+            user: {
+                id: result.insertedId,
+                email,
+                name,
+            },
         });
     } catch (error) {
         res.status(500).json({ message: "Error creating user", error });

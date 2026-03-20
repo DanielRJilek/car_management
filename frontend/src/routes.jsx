@@ -2,6 +2,7 @@ import CarsPage from "./components/CarsPage";
 import Home from "./components/Home";
 import LogIn from "./components/LogIn";
 import Sales from "./components/Sales";
+import SignUp from "./components/Signup";
 import Welcome from "./components/Welcome";
 
 const routes = [
@@ -18,6 +19,14 @@ const routes = [
         element: (
           <Home>
             <LogIn />
+          </Home>
+        ),
+    },
+    {
+      path: "/signup",
+        element: (
+          <Home>
+            <SignUp />
           </Home>
         ),
     },

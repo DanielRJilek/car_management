@@ -7,13 +7,13 @@ import { getDB } from "../db/dbConn.js";
 // Local Strategy for Login
 const localStrategy = new LocalStrategy(
     {
-        usernameField: "email",
+        usernameField: "username",
         passwordField: "password",
     },
-    async (email, password, done) => {
+    async (username, password, done) => {
         try {
             const db = getDB();
-            const user = await db.collection("users").findOne({ email });
+            const user = await db.collection("users").findOne({ name: username });
 
             if (!user) {
                 return done(null, false, { message: "User not found" });

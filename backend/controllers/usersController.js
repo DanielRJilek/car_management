@@ -21,20 +21,23 @@ export const getUserById = async (req, res) => {
     }
 }
 
-export const getMyData = (async (req,res) => {
+export const getMyData = async (req, res) => {
     try {
         let db = getDB();
-        const {id} = req.user;
-        const user = await db.collection("users").findOne({ userID: Number(id) });
+        // req.user is populated by Passport JWT middleware
+        if (!req.user) {
+            return res.status(401).json({message: "Not authenticated"});
+        }
+        const user = await db.collection("users").findOne({ _id: req.user._id });
         if (!user) {
             return res.status(400).json({message: "No user found"});
         }
+        res.json({ _id: user._id, username: user.name, email: user.email });
     } catch (err) {
         console.log(err);
+        res.status(500).json({message: "Error fetching user data", error: err});
     }
-
-    res.json(user);
-});
+};
 
 export const createUser = async (req, res) => {
     try {

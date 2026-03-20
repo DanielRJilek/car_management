@@ -9,7 +9,7 @@ function CarsPage() {
   const [editingCar, setEditingCar] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
 
-  const CARS_API_URL = "https://car-management-x6us.onrender.com/api/cars";
+  const CARS_API_URL = `${import.meta.env.VITE_API_URL}/cars`;
 
   function normalizeCarId(id) {
     if (id && typeof id === "object" && "$oid" in id) {

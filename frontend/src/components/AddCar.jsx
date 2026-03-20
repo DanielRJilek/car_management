@@ -9,7 +9,7 @@ function AddCar({ onCarAdded }) {
 
   async function handleSubmit() {
     try {
-      await fetch("https://car-management-x6us.onrender.com/api/cars", {
+      await fetch(`${import.meta.env.VITE_API_URL}/cars`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
