@@ -30,7 +30,6 @@ function Welcome() {
                     src={dealershipImage}
                     alt='Dealership'
                     onError={(event) => {
-                        // Prevent infinite loops if fallback also fails.
                         if (event.currentTarget.src !== fallbackHeroImage) {
                             event.currentTarget.src = fallbackHeroImage;
                         }
