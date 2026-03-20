@@ -53,11 +53,8 @@ function SalesPage() {
         return;
       }
       
-      setSales((prevSales) => prevSales.filter((sale) => sale._id !== saleId));
-      
-      if (editingSale && editingSale._id === saleId) {
-        setEditingSale(null);
-      }
+      loadSales();
+      setEditingSale(null);
     } catch (error) {
       console.log("Error deleting sale:", error);
     }

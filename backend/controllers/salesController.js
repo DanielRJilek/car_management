@@ -139,11 +139,11 @@ export const deleteSale = async (req, res) => {
         
         let filter;
         try {
+            filter = { _id: new ObjectId(id) };
+        } catch (e) {
             // Try as number, then as string
             const numId = Number(id);
-            filter = isNaN(numId) ? { _id: id } : { _id: numIew ObjectId(id) };
-        } catch (e) {
-            filter = { _id: id };
+            filter = isNaN(numId) ? { _id: id } : { _id: numId };
         }
         
         const result = await db.collection("sales").deleteOne(filter);
