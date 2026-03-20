@@ -189,6 +189,7 @@ It helped clarify:
 
   
 * Sales Page
+<img width="2533" height="1395" alt="image" src="https://github.com/user-attachments/assets/fb964dd9-560e-4ddd-95d1-4746d24f83d2" />
 
 ---
 
