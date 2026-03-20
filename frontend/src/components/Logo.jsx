@@ -1,5 +1,5 @@
 import "../css/Logo.css";
-import imgPath from "../assets/dealership.jpg";
+import imgPath from "./src/assets/dealership.jpg";
 
 function Logo() {
     return <div className='logo' aria-hidden='true'>
