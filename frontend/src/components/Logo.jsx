@@ -1,8 +1,9 @@
 import "../css/Logo.css";
+import imgPath from "../assets/dealership.jpg";
 
 function Logo() {
     return <div className='logo' aria-hidden='true'>
-        <img src="./src/assets/dealership.jpg" alt="Dealership" />
+        <img src={imgPath} alt="Dealership" />
     </div>;
 }
 
