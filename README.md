@@ -159,7 +159,7 @@ The Pexels license allows free use for personal and commercial purposes without 
 
 #  AI Usage
 
-AI (ChatGPT) was used as a **learning assistant** during development, particularly for understanding React and full-stack integration.
+(ChatGPT) was used during development, particularly for understanding React and full-stack integration.
 
 It helped clarify:
 
@@ -179,10 +179,13 @@ It helped clarify:
 
 # Screenshots
 
-*(Add screenshots here)*
 
 * Home Page
+  <img width="1405" height="678" alt="thumbnail" src="https://github.com/user-attachments/assets/6788a571-f78c-42f8-84bd-1b0db86d3efe" />
+
 * Cars Page
+
+  
 * Sales Page
 
 ---
