@@ -31,13 +31,6 @@ export const login = (req, res, next) => {
             const accessToken = generateToken(user._id);
             const refreshToken = generateRefreshToken(user._id);
 
-            // Store refresh token in database (optional but recommended)
-            const db = getDB();
-            await db.collection("users").updateOne(
-                { _id: user._id },
-                { $set: { refreshToken } }
-            );
-
             res.json({
                 message: "Login successful",
                 accessToken,
@@ -140,7 +133,6 @@ export const signup = async (req, res) => {
         const newUser = {
             username,
             password: hashedPassword,
-            createdAt: new Date(),
         };
 
         const result = await db.collection("users").insertOne(newUser);
@@ -148,12 +140,6 @@ export const signup = async (req, res) => {
         // Generate tokens for immediate login
         const accessToken = generateToken(result.insertedId);
         const refreshToken = generateRefreshToken(result.insertedId);
-
-        // Store refresh token in database
-        await db.collection("users").updateOne(
-            { _id: result.insertedId },
-            { $set: { refreshToken } }
-        );
 
         res.status(201).json({
             message: "User created successfully",

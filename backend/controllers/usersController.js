@@ -67,8 +67,7 @@ export const createUser = async (req, res) => {
         // Store only the hashed password, not password1 and password2
         const newUser = { 
             username, 
-            password: hashedPassword, 
-            createdAt: new Date() 
+            password: hashedPassword 
         };
         const result = await db.collection("users").insertOne(newUser);
         
