@@ -1,6 +1,6 @@
 import express from "express";
 import { ObjectId } from "mongodb";
-import * as controller from '..controllers/usersController.js'
+import * as controller from '../controllers/usersController.js'
 
 
 export default function userRoutes(db) {

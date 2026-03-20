@@ -4,7 +4,7 @@ import carsRoutes from "./routes/carRoutes.js";
 import salesRoutes from "./routes/salesRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
-import passport from "../config/passport.js";
+import passport from "./config/passport.js";
 import bcrypt from "bcrypt";
 import { connectDB } from "./db/dbConn.js";
 

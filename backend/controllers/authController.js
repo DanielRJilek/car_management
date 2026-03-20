@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { getDB } from "../db/dbConn.js";
-import passport from "../../config/passport.js";
+import passport from "../config/passport.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key_here";
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || "your_refresh_token_secret_key_here";

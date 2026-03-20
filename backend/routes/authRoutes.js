@@ -1,6 +1,6 @@
 import express from "express";
 import { login, logout, refresh, signup } from "../controllers/authController.js";
-import passport from "../../config/passport.js";
+import passport from "../config/passport.js";
 
 export default function authRoutes(db) {
     const router = express.Router();

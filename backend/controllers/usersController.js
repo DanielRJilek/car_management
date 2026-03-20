@@ -23,6 +23,7 @@ export const getUserById = async (req, res) => {
 
 export const getMyData = (async (req,res) => {
     try {
+        let db = getDB();
         const {id} = req.user;
         const user = await db.collection("users").findOne({ userID: Number(id) });
         if (!user) {
@@ -39,7 +40,7 @@ export const createUser = async (req, res) => {
     try {
         let db = getDB();
         const newUser = req.body;
-        await db.collection("users").insertOne(newUsers);        
+        await db.collection("users").insertOne(newUser);        
         res.json({ message: "User created successfully" });
     } catch (err) {
         console.log(err);
