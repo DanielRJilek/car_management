@@ -4,6 +4,7 @@ import LogIn from "./components/LogIn";
 import Sales from "./components/Sales";
 import SignUp from "./components/Signup";
 import Welcome from "./components/Welcome";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const routes = [
     {
@@ -41,9 +42,11 @@ const routes = [
     {
        path: "/sales",
         element: (
-          <Home>
-            <Sales />
-          </Home>
+          <ProtectedRoute>
+            <Home>
+              <Sales />
+            </Home>
+          </ProtectedRoute>
         ),
     }
 ]

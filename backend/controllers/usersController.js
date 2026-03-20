@@ -24,16 +24,18 @@ export const getUserById = async (req, res) => {
 
 export const getMyData = async (req, res) => {
     try {
-        let db = getDB();
-        // req.user is populated by Passport JWT middleware
+        // Check if user is authenticated
         if (!req.user) {
-            return res.status(401).json({message: "Not authenticated"});
+            // Return empty response for unauthenticated users
+            return res.json({ _id: null, username: null });
         }
+        
+        let db = getDB();
         const user = await db.collection("users").findOne({ _id: req.user._id });
         if (!user) {
             return res.status(400).json({message: "No user found"});
         }
-        res.json({ _id: user._id, username: user.username, email: user.email });
+        res.json({ _id: user._id, username: user.username });
     } catch (err) {
         console.log(err);
         res.status(500).json({message: "Error fetching user data", error: err});

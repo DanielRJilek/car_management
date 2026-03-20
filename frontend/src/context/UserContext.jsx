@@ -13,22 +13,24 @@ export const UserContextProvider = ({children}) => {
         async function fetchData() {
             try {
                 const token = localStorage.getItem("token");
-                if (!token) {
+                const response = await fetch(`${API_URL}/users`, {
+                    method:'GET',
+                    headers: {  'Authorization': token ? `Bearer ${token}` : "",
+                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" }, 
+                });
+                if (!response.ok) {
                     setUserID("");
                     setUsername("");
                     return;
                 }
-                const response = await fetch(`${API_URL}/users`, {
-                    method:'GET',
-                    headers: {  'Authorization': `Bearer ${token}`,
-                                "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" }, 
-                });
-                if (!response.ok) {
-                    throw new Error("Failed");
+                const data = await response.json();
+                if (data._id && data.username) {
+                    setUsername(data.username);
+                    setUserID(data._id);
+                } else {
+                    setUserID("");
+                    setUsername("");
                 }
-                const {_id, username} = await response.json();
-                setUsername(username);
-                setUserID(_id);
             } 
             catch (error) {
                 console.log(error)
