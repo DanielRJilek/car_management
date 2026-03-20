@@ -184,6 +184,7 @@ It helped clarify:
   <img width="1405" height="678" alt="thumbnail" src="https://github.com/user-attachments/assets/6788a571-f78c-42f8-84bd-1b0db86d3efe" />
 
 * Cars Page
+<img width="1234" height="679" alt="Screenshot 2026-03-20 at 7 39 51 AM" src="https://github.com/user-attachments/assets/520a020e-38c9-4e16-9a37-440cc755b0b3" />
 
   
 * Sales Page
