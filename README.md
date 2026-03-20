@@ -151,7 +151,7 @@ http://localhost:5173
 Backend API:
 
 ```bash
-http://localhost:3000
+http://localhost:10000
 ```
 
 ---
