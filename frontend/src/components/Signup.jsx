@@ -25,7 +25,7 @@ function SignUp() {
             const response = await fetch(`${API_URL}/auth/signup`, {
                 method:'POST',
                 headers: { "Content-Type": "application/json", "Accept-Encoding": "gzip, deflate, br" },
-                body: JSON.stringify({email: username, password: password1, name: username}),
+                body: JSON.stringify({username, password: password1}),
             });
             if (!response.ok) {
                 const message = await response.json();
@@ -48,7 +48,7 @@ function SignUp() {
             }
             
             const {accessToken, user: userData} = await loginResponse.json();
-            user.setUsername(userData.name);
+            user.setUsername(userData.username);
             user.setUserID(userData.id.toString());
             auth.setAccessToken(accessToken);
             navigate('/');

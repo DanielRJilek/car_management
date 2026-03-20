@@ -13,7 +13,7 @@ const localStrategy = new LocalStrategy(
     async (username, password, done) => {
         try {
             const db = getDB();
-            const user = await db.collection("users").findOne({ name: username });
+            const user = await db.collection("users").findOne({ username });
 
             if (!user) {
                 return done(null, false, { message: "User not found" });

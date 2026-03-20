@@ -118,17 +118,17 @@ export const refresh = async (req, res) => {
 // Signup Controller
 export const signup = async (req, res) => {
     try {
-        const { email, password, name } = req.body;
+        const { username, password, name } = req.body;
 
         // Validate input
-        if (!email || !password || !name) {
-            return res.status(400).json({ message: "Email, password, and name are required" });
+        if (!username || !password) {
+            return res.status(400).json({ message: "Username and password are required" });
         }
 
         const db = getDB();
 
         // Check if user already exists
-        const existingUser = await db.collection("users").findOne({ email });
+        const existingUser = await db.collection("users").findOne({ username });
         if (existingUser) {
             return res.status(409).json({ message: "User already exists" });
         }
@@ -138,9 +138,8 @@ export const signup = async (req, res) => {
 
         // Create new user
         const newUser = {
-            email,
+            username,
             password: hashedPassword,
-            name,
             createdAt: new Date(),
         };
 

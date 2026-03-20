@@ -1,4 +1,5 @@
 import { getDB } from "../db/dbConn.js";
+import bcrypt from "bcrypt";
 
 export const getUsers = async(req, res) => {
     try {
@@ -32,7 +33,7 @@ export const getMyData = async (req, res) => {
         if (!user) {
             return res.status(400).json({message: "No user found"});
         }
-        res.json({ _id: user._id, username: user.name, email: user.email });
+        res.json({ _id: user._id, username: user.username, email: user.email });
     } catch (err) {
         console.log(err);
         res.status(500).json({message: "Error fetching user data", error: err});
@@ -60,7 +61,15 @@ export const createUser = async (req, res) => {
             return res.status(409).json({ message: "Username already exists" });
         }
         
-        const newUser = { username, password1, password2, createdAt: new Date() };
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password1, 10);
+        
+        // Store only the hashed password, not password1 and password2
+        const newUser = { 
+            username, 
+            password: hashedPassword, 
+            createdAt: new Date() 
+        };
         const result = await db.collection("users").insertOne(newUser);
         
         res.status(201).json({ 
