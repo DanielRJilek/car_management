@@ -126,12 +126,6 @@ export const updateSale = async (req, res) => {
         res.status(500).json({ message: "Error updating sale", error: err });
     }
 };
-        });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ message: "Error updating sale", error: err });
-    }
-};
 
 // Delete a sale
 export const deleteSale = async (req, res) => {
