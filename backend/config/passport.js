@@ -1,6 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
+import { ObjectId } from "mongodb";
 import bcrypt from "bcrypt";
 import { getDB } from "../db/dbConn.js";
 
@@ -42,7 +43,7 @@ const jwtStrategy = new JWTStrategy(
     async (jwtPayload, done) => {
         try {
             const db = getDB();
-            const user = await db.collection("users").findOne({ _id: jwtPayload.userId });
+            const user = await db.collection("users").findOne({ _id: new ObjectId(jwtPayload.userId) });
 
             if (!user) {
                 return done(null, false);

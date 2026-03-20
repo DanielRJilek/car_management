@@ -4,20 +4,25 @@ import UpdateSale from "./UpdateSale";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-function Sales() {
+function SalesPage() {
   const [sales, setSales] = useState([]);
   const [editingSale, setEditingSale] = useState(null);
   const auth = useContext(AuthContext);
 
   useEffect(() => {
-    loadSales();
-  }, []);
+    if (auth.accessToken) {
+      loadSales();
+    }
+  }, [auth.accessToken]);
 
   async function loadSales() {
     try {
+      const token = auth.accessToken;
+      console.log("Loading sales with token:", token);
+      
       const response = await fetch(`${API_URL}/sales`, {
         headers: {
-          "Authorization": `Bearer ${auth.accessToken}`
+          "Authorization": `Bearer ${token}`
         }
       });
       const data = await response.json();
@@ -30,15 +35,25 @@ function Sales() {
 
   async function deleteSale(saleId) {
     try {
+      const token = auth.accessToken;
+      console.log("Auth token being sent:", token);
+      
       const response = await fetch(`${API_URL}/sales/${saleId}`, {
         method: "DELETE",
         headers: {
-          "Authorization": `Bearer ${auth.accessToken}`
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
         }
       });
 
       if (!response.ok) {
-        console.log("Delete request failed on server");
+        try {
+          const error = await response.json();
+          console.log("Delete request failed on server:", response.status, error);
+        } catch (e) {
+          const text = await response.text();
+          console.log("Delete request failed on server:", response.status, text);
+        }
         return;
       }
       
@@ -118,4 +133,4 @@ function Sales() {
   );
 }
 
-export default Sales;
+export default SalesPage;

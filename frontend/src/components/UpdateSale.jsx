@@ -13,11 +13,14 @@ function UpdateSale({ sale, onSaleUpdated, onCancel }) {
 
   async function handleUpdate() {
     try {
+      const token = auth.accessToken;
+      console.log("Auth token for update:", token);
+      
       const response = await fetch(`${API_URL}/sales/${sale._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${auth.accessToken}`
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
           car_id: Number(carId),
@@ -30,7 +33,8 @@ function UpdateSale({ sale, onSaleUpdated, onCancel }) {
       if (response.ok) {
         onSaleUpdated();
       } else {
-        console.error("Error updating sale:", response.statusText);
+        const error = await response.json();
+        console.error("Error updating sale:", response.status, error);
       }
     } catch (error) {
       console.error("Error updating sale:", error);
