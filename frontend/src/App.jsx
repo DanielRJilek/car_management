@@ -4,7 +4,7 @@ import { AuthContext, AuthContextProvider } from './context/AuthContext'
 import { UserContext, UserContextProvider } from './context/UserContext'
 import './css/styles.css'
 import './index.css'
-import routes from './routes'
+import routes from './routing/routes'
 
 function App() {
   const user = useContext(AuthContext);

@@ -1,10 +1,10 @@
-import CarsPage from "./components/CarsPage";
-import Home from "./components/Home";
-import LogIn from "./components/LogIn";
-import SalesPage from "./components/SalesPage";
-import SignUp from "./components/Signup";
-import Welcome from "./components/Welcome";
-import ProtectedRoute from "./components/ProtectedRoute";
+import CarsPage from "../components/CarsPage";
+import Home from "../components/Home";
+import LogIn from "../components/LogIn";
+import SalesPage from "../components/SalesPage";
+import SignUp from "../components/Signup";
+import Welcome from "../components/Welcome";
+import ProtectedRoute from "./ProtectedRoute";
 
 const routes = [
     {

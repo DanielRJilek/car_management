@@ -1,13 +1,35 @@
 import { Fragment, useEffect, useState } from "react";
 import "../css/cars.css";
-import AddCar from "./AddCar";
-import UpdateCar from "./UpdateCar";
+import AddForm from "./AddForm";
+import UpdateForm from "./UpdateForm";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+const CAR_FIELDS = [
+  { name: "make", type: "text", placeholder: "Make", defaultValue: "" },
+  { name: "model", type: "text", placeholder: "Model", defaultValue: "" },
+  { name: "year", type: "text", placeholder: "Year", defaultValue: "" },
+  { name: "price", type: "text", placeholder: "Price", defaultValue: "" },
+  { name: "status", type: "select", placeholder: "Status", options: ["Available", "Sold"], defaultValue: "Available" }
+];
+
+const UPDATE_CAR_FIELDS = [
+  { name: "make", type: "text", placeholder: "Make" },
+  { name: "model", type: "text", placeholder: "Model" },
+  { name: "year", type: "text", placeholder: "Year" },
+  { name: "price", type: "text", placeholder: "Price" },
+  { name: "status", type: "select", placeholder: "Status", options: ["Available", "Sold"] }
+];
 
 function CarsPage() {
   const [cars, setCars] = useState([]);
   const [result, setResult] = useState("");
   const [editingCar, setEditingCar] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [sortPrice, setSortPrice] = useState(null); // null, 'asc', or 'desc'
+  const [filterStatus, setFilterStatus] = useState("");
+  const [filterMake, setFilterMake] = useState("");
+  const [filterModel, setFilterModel] = useState("");
 
   const CARS_API_URL = `${import.meta.env.VITE_API_URL}/cars`;
 
@@ -71,12 +93,34 @@ function CarsPage() {
   }
 
   function handleUpdateCar(car) {
-    setEditingCar(car);
+    if (editingCar && normalizeCarId(editingCar._id) === normalizeCarId(car._id)) {
+      setEditingCar(null);
+    } else {
+      setEditingCar(car);
+    }
   }
 
-  function handleCancelUpdate() {
-    setEditingCar(null);
+  function sortCarsByPrice() {
+    if (sortPrice === null) {
+      setSortPrice('asc');
+    } else if (sortPrice === 'asc') {
+      setSortPrice('desc');
+    } else {
+      setSortPrice(null);
+    }
   }
+
+  const sortedCars = [...cars]
+    .filter(car =>
+      (!filterStatus || car.status === filterStatus) &&
+      (!filterMake || car.make.toLowerCase().includes(filterMake.toLowerCase())) &&
+      (!filterModel || car.model.toLowerCase().includes(filterModel.toLowerCase()))
+    )
+    .sort((a, b) => {
+      if (sortPrice === null) return 0;
+      const priceDiff = a.price - b.price;
+      return sortPrice === 'asc' ? priceDiff : -priceDiff;
+    });
 
   return (
     <div>
@@ -90,11 +134,39 @@ function CarsPage() {
           <button onClick={totalAvailable}>Total Available Cars</button>
           <button onClick={totalSold}>Total Sold Cars</button>
 
+          <button onClick={sortCarsByPrice}>
+            Sort by Price {sortPrice === 'asc' ? '↑' : sortPrice === 'desc' ? '↓' : ''}
+          </button>
+
           <span>{result}</span>
+
+          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
+            <option value="">All Status</option>
+            <option value="Available">Available</option>
+            <option value="Sold">Sold</option>
+          </select>
+
+          <input
+            placeholder="Filter by Make"
+            value={filterMake}
+            onChange={(e) => setFilterMake(e.target.value)}
+          />
+
+          <input
+            placeholder="Filter by Model"
+            value={filterModel}
+            onChange={(e) => setFilterModel(e.target.value)}
+          />
         </div>
 
         {showAddForm && (
-          <AddCar onCarAdded={() => { loadCars(); setShowAddForm(false); }} />
+          <AddForm
+            title="Add New Car"
+            endpoint="/cars"
+            fields={CAR_FIELDS}
+            buttonLabel="Add Car"
+            onSubmit={() => { loadCars(); setShowAddForm(false); }}
+          />
         )}
 
         <table>
@@ -110,7 +182,7 @@ function CarsPage() {
           </thead>
 
           <tbody>
-            {cars.map((car) => (
+            {sortedCars.map((car) => (
               <Fragment key={normalizeCarId(car._id)}>
                 <tr>
                   <td>{car.make}</td>
@@ -130,13 +202,17 @@ function CarsPage() {
                 {editingCar && normalizeCarId(editingCar._id) === normalizeCarId(car._id) && (
                   <tr>
                     <td colSpan="6">
-                      <UpdateCar
-                        car={editingCar}
-                        onCarUpdated={() => {
+                      <UpdateForm
+                        title="Update Car"
+                        item={editingCar}
+                        itemId={normalizeCarId(editingCar._id)}
+                        endpoint="/cars"
+                        fields={UPDATE_CAR_FIELDS}
+                        buttonLabel="Save"
+                        onSubmit={() => {
                           loadCars();
                           setEditingCar(null);
                         }}
-                        onCancel={handleCancelUpdate}
                       />
                     </td>
                   </tr>
