@@ -139,24 +139,6 @@ function CarsPage() {
           </button>
 
           <span>{result}</span>
-
-          <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)}>
-            <option value="">All Status</option>
-            <option value="Available">Available</option>
-            <option value="Sold">Sold</option>
-          </select>
-
-          <input
-            placeholder="Filter by Make"
-            value={filterMake}
-            onChange={(e) => setFilterMake(e.target.value)}
-          />
-
-          <input
-            placeholder="Filter by Model"
-            value={filterModel}
-            onChange={(e) => setFilterModel(e.target.value)}
-          />
         </div>
 
         {showAddForm && (
@@ -172,11 +154,36 @@ function CarsPage() {
         <table>
           <thead>
             <tr>
-              <th>Make</th>
-              <th>Model</th>
+              <th>
+                Make
+                <input
+                  type="text"
+                  placeholder="Filter"
+                  value={filterMake}
+                  onChange={(e) => setFilterMake(e.target.value)}
+                  style={{marginLeft: '8px', width: '100px', padding: '4px'}}
+                />
+              </th>
+              <th>
+                Model
+                <input
+                  type="text"
+                  placeholder="Filter"
+                  value={filterModel}
+                  onChange={(e) => setFilterModel(e.target.value)}
+                  style={{marginLeft: '8px', width: '100px', padding: '4px'}}
+                />
+              </th>
               <th>Year</th>
               <th>Price</th>
-              <th>Status</th>
+              <th>
+                Status
+                <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} style={{marginLeft: '8px', width: '120px'}}>
+                  <option value="">All</option>
+                  <option value="Available">Available</option>
+                  <option value="Sold">Sold</option>
+                </select>
+              </th>
               <th>Actions</th>
             </tr>
           </thead>

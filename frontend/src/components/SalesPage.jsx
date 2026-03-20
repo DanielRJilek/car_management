@@ -151,18 +151,6 @@ function SalesPage() {
           </button>
 
           {showTotals && <span>{result}</span>}
-          
-          <input
-            placeholder="Filter by Salesperson"
-            value={filterSalesperson}
-            onChange={(e) => setFilterSalesperson(e.target.value)}
-          />
-          
-          <input
-            placeholder="Filter by Customer Name"
-            value={filterCustomer}
-            onChange={(e) => setFilterCustomer(e.target.value)}
-          />
         </div>
 
         {showAddForm && (
@@ -180,9 +168,27 @@ function SalesPage() {
           <thead>
             <tr>
               <th>Car ID</th>
-              <th>Customer Name</th>
+              <th>
+                Customer Name
+                <input
+                  type="text"
+                  placeholder="Filter"
+                  value={filterCustomer}
+                  onChange={(e) => setFilterCustomer(e.target.value)}
+                  style={{marginLeft: '8px', width: '100px', padding: '4px'}}
+                />
+              </th>
               <th>Sale Price</th>
-              <th>Salesperson</th>
+              <th>
+                Salesperson
+                <input
+                  type="text"
+                  placeholder="Filter"
+                  value={filterSalesperson}
+                  onChange={(e) => setFilterSalesperson(e.target.value)}
+                  style={{marginLeft: '8px', width: '100px', padding: '4px'}}
+                />
+              </th>
               <th>Sale Date</th>
               <th>Actions</th>
             </tr>
