@@ -1,15 +1,15 @@
 import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
+import passport from "./config/passport.js";
+import { connectDB } from "./db/dbConn.js";
+import authRoutes from "./routes/authRoutes.js";
 import carsRoutes from "./routes/carRoutes.js";
 import salesRoutes from "./routes/salesRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
-import passport from "./config/passport.js";
-import bcrypt from "bcrypt";
-import { connectDB } from "./db/dbConn.js";
 
 const PORT = process.env.PORT || 10000;
-dotenv.config();
 
 const app = express();
 app.use(express.json());

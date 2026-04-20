@@ -23,13 +23,20 @@ const UPDATE_CAR_FIELDS = [
 
 function CarsPage() {
   const [cars, setCars] = useState([]);
-  const [result, setResult] = useState("");
+  const [stats, setStats] = useState({
+    totalCars: null,
+    totalAvailable: null,
+    totalSold: null
+  });
   const [editingCar, setEditingCar] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [sortPrice, setSortPrice] = useState(null); // null, 'asc', or 'desc'
   const [filterStatus, setFilterStatus] = useState("");
   const [filterMake, setFilterMake] = useState("");
   const [filterModel, setFilterModel] = useState("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [carToDelete, setCarToDelete] = useState(null);
+  const [filterPriceSort, setFilterPriceSort] = useState(null); // null, 'asc', or 'desc'
 
   const CARS_API_URL = `${import.meta.env.VITE_API_URL}/cars`;
 
@@ -79,17 +86,17 @@ function CarsPage() {
   }
 
   function totalCars() {
-    setResult(`Total Cars: ${cars.length}`);
+    setStats(prev => ({ ...prev, totalCars: `Total Cars: ${cars.length}` }));
   }
 
   function totalAvailable() {
     const count = cars.filter((car) => car.status === "Available").length;
-    setResult(`Total Available Cars: ${count}`);
+    setStats(prev => ({ ...prev, totalAvailable: `Total Available Cars: ${count}` }));
   }
 
   function totalSold() {
     const count = cars.filter((car) => car.status === "Sold").length;
-    setResult(`Total Sold Cars: ${count}`);
+    setStats(prev => ({ ...prev, totalSold: `Total Sold Cars: ${count}` }));
   }
 
   function handleUpdateCar(car) {
@@ -100,13 +107,13 @@ function CarsPage() {
     }
   }
 
-  function sortCarsByPrice() {
-    if (sortPrice === null) {
-      setSortPrice('asc');
-    } else if (sortPrice === 'asc') {
-      setSortPrice('desc');
+  function togglePriceSort() {
+    if (filterPriceSort === null) {
+      setFilterPriceSort('asc');
+    } else if (filterPriceSort === 'asc') {
+      setFilterPriceSort('desc');
     } else {
-      setSortPrice(null);
+      setFilterPriceSort(null);
     }
   }
 
@@ -117,9 +124,9 @@ function CarsPage() {
       (!filterModel || car.model.toLowerCase().includes(filterModel.toLowerCase()))
     )
     .sort((a, b) => {
-      if (sortPrice === null) return 0;
+      if (filterPriceSort === null) return 0;
       const priceDiff = a.price - b.price;
-      return sortPrice === 'asc' ? priceDiff : -priceDiff;
+      return filterPriceSort === 'asc' ? priceDiff : -priceDiff;
     });
 
   return (
@@ -133,12 +140,12 @@ function CarsPage() {
           <button onClick={totalCars}>Total Cars</button>
           <button onClick={totalAvailable}>Total Available Cars</button>
           <button onClick={totalSold}>Total Sold Cars</button>
+        </div>
 
-          <button onClick={sortCarsByPrice}>
-            Sort by Price {sortPrice === 'asc' ? '↑' : sortPrice === 'desc' ? '↓' : ''}
-          </button>
-
-          <span>{result}</span>
+        <div className="stats-display">
+          {stats.totalCars && <div>{stats.totalCars}</div>}
+          {stats.totalAvailable && <div>{stats.totalAvailable}</div>}
+          {stats.totalSold && <div>{stats.totalSold}</div>}
         </div>
 
         {showAddForm && (
@@ -175,7 +182,15 @@ function CarsPage() {
                 />
               </th>
               <th>Year</th>
-              <th>Price</th>
+              <th>
+                Price
+                <button 
+                  onClick={togglePriceSort}
+                  style={{marginLeft: '8px', background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '14px'}}
+                >
+                  {filterPriceSort === 'asc' ? '↑' : filterPriceSort === 'desc' ? '↓' : '↕'}
+                </button>
+              </th>
               <th>
                 Status
                 <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} style={{marginLeft: '8px', width: '120px'}}>
@@ -201,7 +216,7 @@ function CarsPage() {
                     <button onClick={() => handleUpdateCar(car)}>
                       Update
                     </button>
-                    <button onClick={() => deleteCar(car._id)}>
+                    <button onClick={() => { setCarToDelete(car._id); setShowDeleteConfirm(true); }}>
                       Delete
                     </button>
                   </td>
@@ -229,6 +244,18 @@ function CarsPage() {
           </tbody>
         </table>
       </div>
+
+      {showDeleteConfirm && (
+        <div className="delete-confirm-overlay">
+          <div className="delete-confirm-dialog">
+            <p>Are you sure you want to delete this car?</p>
+            <div className="delete-confirm-buttons">
+              <button onClick={() => { deleteCar(carToDelete); setShowDeleteConfirm(false); setCarToDelete(null); }}>Yes</button>
+              <button onClick={() => { setShowDeleteConfirm(false); setCarToDelete(null); }}>No</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
