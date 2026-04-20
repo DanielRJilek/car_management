@@ -37,7 +37,8 @@ Instead of relying on spreadsheets or disconnected tools, this platform centrali
   https://docs.google.com/presentation/d/1LvLrOHhLtmGReQEMSHt1McX6s0qMD1Y3b5akLm0p9Wc/edit?usp=sharing
 * **Design Document:**
   [https://docs.google.com/document/d/1NXgCjUKdv8X7MqSYT4_0Hn3ZCtJRze0rq-wCmTqM0O4/edit?usp=sharing]
-
+* **Usability Study Document:**
+  [https://docs.google.com/document/d/1pPHnvJ14sm3raY4-eCv44ttyxTMmbjnjPIsVbwrqy0I/edit?usp=sharing]
 ---
 
 #  Tech Stack
