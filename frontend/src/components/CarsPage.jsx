@@ -86,17 +86,17 @@ function CarsPage() {
   }
 
   function totalCars() {
-    setStats(prev => ({ ...prev, totalCars: `Total Cars: ${cars.length}` }));
+    setStats({ totalCars: `Total Cars: ${cars.length}`, totalAvailable: null, totalSold: null });
   }
 
   function totalAvailable() {
     const count = cars.filter((car) => car.status === "Available").length;
-    setStats(prev => ({ ...prev, totalAvailable: `Total Available Cars: ${count}` }));
+    setStats({ totalCars: null, totalAvailable: `Total Available Cars: ${count}`, totalSold: null });
   }
 
   function totalSold() {
     const count = cars.filter((car) => car.status === "Sold").length;
-    setStats(prev => ({ ...prev, totalSold: `Total Sold Cars: ${count}` }));
+    setStats({ totalCars: null, totalAvailable: null, totalSold: `Total Sold Cars: ${count}` });
   }
 
   function handleUpdateCar(car) {
@@ -186,7 +186,7 @@ function CarsPage() {
                 Price
                 <button 
                   onClick={togglePriceSort}
-                  style={{marginLeft: '8px', background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '14px'}}
+                  style={{marginLeft: '4px', background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '14px', padding: '0'}}
                 >
                   {filterPriceSort === 'asc' ? '↑' : filterPriceSort === 'desc' ? '↓' : '↕'}
                 </button>
