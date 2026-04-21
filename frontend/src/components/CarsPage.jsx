@@ -38,6 +38,9 @@ function CarsPage() {
   const [carToDelete, setCarToDelete] = useState(null);
   const [filterPriceSort, setFilterPriceSort] = useState(null); // null, 'asc', or 'desc'
 
+  const yesButtonRef = useRef(null);
+  const noButtonRef = useRef(null);
+
   const CARS_API_URL = `${import.meta.env.VITE_API_URL}/cars`;
 
   function normalizeCarId(id) {
@@ -51,6 +54,12 @@ function CarsPage() {
   useEffect(() => {
     loadCars();
   }, []);
+
+  useEffect(() => {
+    if (showDeleteConfirm && yesButtonRef.current) {
+      yesButtonRef.current.focus();
+    }
+  }, [showDeleteConfirm]);
 
   async function loadCars() {
     try {
@@ -114,6 +123,20 @@ function CarsPage() {
       setFilterPriceSort('desc');
     } else {
       setFilterPriceSort(null);
+    }
+  }
+
+  function handleDialogKeyDown(e) {
+    if (e.key === 'Escape') {
+      setShowDeleteConfirm(false);
+      setCarToDelete(null);
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      if (e.target === yesButtonRef.current) {
+        noButtonRef.current.focus();
+      } else if (e.target === noButtonRef.current) {
+        yesButtonRef.current.focus();
+      }
     }
   }
 
@@ -187,6 +210,7 @@ function CarsPage() {
                 <button 
                   onClick={togglePriceSort}
                   style={{marginLeft: '4px', background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '14px', padding: '0'}}
+                  aria-label={filterPriceSort === 'asc' ? 'Sort price descending' : filterPriceSort === 'desc' ? 'Remove price sort' : 'Sort price ascending'}
                 >
                   {filterPriceSort === 'asc' ? '↑' : filterPriceSort === 'desc' ? '↓' : '↕'}
                 </button>
@@ -246,12 +270,12 @@ function CarsPage() {
       </div>
 
       {showDeleteConfirm && (
-        <div className="delete-confirm-overlay">
+        <div className="delete-confirm-overlay" onKeyDown={handleDialogKeyDown}>
           <div className="delete-confirm-dialog">
             <p>Are you sure you want to delete this car?</p>
             <div className="delete-confirm-buttons">
-              <button onClick={() => { deleteCar(carToDelete); setShowDeleteConfirm(false); setCarToDelete(null); }}>Yes</button>
-              <button onClick={() => { setShowDeleteConfirm(false); setCarToDelete(null); }}>No</button>
+              <button ref={yesButtonRef} onClick={() => { deleteCar(carToDelete); setShowDeleteConfirm(false); setCarToDelete(null); }}>Yes</button>
+              <button ref={noButtonRef} onClick={() => { setShowDeleteConfirm(false); setCarToDelete(null); }}>No</button>
             </div>
           </div>
         </div>
