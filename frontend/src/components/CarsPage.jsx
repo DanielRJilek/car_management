@@ -23,11 +23,8 @@ const UPDATE_CAR_FIELDS = [
 
 function CarsPage() {
   const [cars, setCars] = useState([]);
-  const [stats, setStats] = useState({
-    totalCars: null,
-    totalAvailable: null,
-    totalSold: null
-  });
+  const [result, setResult] = useState("");
+  const [showStats, setShowStats] = useState(false);
   const [editingCar, setEditingCar] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [filterStatus, setFilterStatus] = useState("");
@@ -97,17 +94,20 @@ function CarsPage() {
   }
 
   function totalCars() {
-    setStats({ totalCars: `Total Cars: ${cars.length}`, totalAvailable: null, totalSold: null });
+    setResult(`Total Cars: ${cars.length}`);
+    setShowStats(!showStats);
   }
 
   function totalAvailable() {
     const count = cars.filter((car) => car.status === "Available").length;
-    setStats({ totalCars: null, totalAvailable: `Total Available Cars: ${count}`, totalSold: null });
+    setResult(`Total Available Cars: ${count}`);
+    setShowStats(!showStats);
   }
 
   function totalSold() {
     const count = cars.filter((car) => car.status === "Sold").length;
-    setStats({ totalCars: null, totalAvailable: null, totalSold: `Total Sold Cars: ${count}` });
+    setResult(`Total Sold Cars: ${count}`);
+    setShowStats(!showStats);
   }
 
   function handleUpdateCar(car) {
@@ -189,10 +189,8 @@ function CarsPage() {
           <button onClick={totalSold}>Total Sold Cars</button>
         </div>
 
-        <div className="stats-display">
-          {stats.totalCars && <div>{stats.totalCars}</div>}
-          {stats.totalAvailable && <div>{stats.totalAvailable}</div>}
-          {stats.totalSold && <div>{stats.totalSold}</div>}
+        <div className="stats-display" style={{minHeight: '24px', textAlign: 'center', marginTop: '16px'}}>
+          {showStats && <span>{result}</span>}
         </div>
 
         {showAddForm && (

@@ -135,7 +135,7 @@ th {
   text-align: center;
 }
 
-.stats-display div {
+.stats-display span {
   margin: 5px 0;
   font-weight: 600;
   color: #166534;
