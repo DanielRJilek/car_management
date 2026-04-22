@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import "../css/Page.css";
 import AddForm from "./AddForm";
 import UpdateForm from "./UpdateForm";
@@ -30,13 +30,15 @@ function CarsPage() {
   });
   const [editingCar, setEditingCar] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [sortPrice, setSortPrice] = useState(null); // null, 'asc', or 'desc'
   const [filterStatus, setFilterStatus] = useState("");
   const [filterMake, setFilterMake] = useState("");
   const [filterModel, setFilterModel] = useState("");
+  const [filterYear, setFilterYear] = useState("");
+  const [filterPrice, setFilterPrice] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [carToDelete, setCarToDelete] = useState(null);
-  const [filterPriceSort, setFilterPriceSort] = useState(null); // null, 'asc', or 'desc'
+  const [sortField, setSortField] = useState(null);
+  const [sortDir, setSortDir] = useState(null); // null, 'asc', or 'desc'
 
   const yesButtonRef = useRef(null);
   const noButtonRef = useRef(null);
@@ -116,13 +118,19 @@ function CarsPage() {
     }
   }
 
-  function togglePriceSort() {
-    if (filterPriceSort === null) {
-      setFilterPriceSort('asc');
-    } else if (filterPriceSort === 'asc') {
-      setFilterPriceSort('desc');
+  function handleSort(field) {
+    if (sortField === field) {
+      if (sortDir === null) {
+        setSortDir('asc');
+      } else if (sortDir === 'asc') {
+        setSortDir('desc');
+      } else {
+        setSortField(null);
+        setSortDir(null);
+      }
     } else {
-      setFilterPriceSort(null);
+      setSortField(field);
+      setSortDir('asc');
     }
   }
 
@@ -140,17 +148,33 @@ function CarsPage() {
     }
   }
 
-  const sortedCars = [...cars]
-    .filter(car =>
-      (!filterStatus || car.status === filterStatus) &&
-      (!filterMake || car.make.toLowerCase().includes(filterMake.toLowerCase())) &&
-      (!filterModel || car.model.toLowerCase().includes(filterModel.toLowerCase()))
-    )
-    .sort((a, b) => {
-      if (filterPriceSort === null) return 0;
-      const priceDiff = a.price - b.price;
-      return filterPriceSort === 'asc' ? priceDiff : -priceDiff;
-    });
+  const filteredCars = cars.filter(car =>
+    (!filterStatus || car.status === filterStatus) &&
+    (!filterMake || car.make.toLowerCase().includes(filterMake.toLowerCase())) &&
+    (!filterModel || car.model.toLowerCase().includes(filterModel.toLowerCase())) &&
+    (!filterYear || car.year.toString().includes(filterYear)) &&
+    (!filterPrice || car.price.toString().includes(filterPrice))
+  );
+
+  const sortedCars = [...filteredCars].sort((a, b) => {
+    if (sortField === null || sortDir === null) return 0;
+    
+    let aValue = a[sortField];
+    let bValue = b[sortField];
+    
+    // Handle numeric values
+    if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return sortDir === 'asc' ? aValue - bValue : bValue - aValue;
+    }
+    // Handle strings
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      aValue = aValue.toLowerCase();
+      bValue = bValue.toLowerCase();
+      return sortDir === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+    }
+    
+    return 0;
+  });
 
   return (
     <div>
@@ -184,46 +208,68 @@ function CarsPage() {
         <table>
           <thead>
             <tr>
-              <th>
-                Make
+              <th style={{ cursor: 'pointer' }} onClick={() => handleSort('make')}>
+                Make <span style={{ opacity: sortField === 'make' ? 1 : 0.3 }}>{sortField === 'make' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
+              </th>
+              <th style={{ cursor: 'pointer' }} onClick={() => handleSort('model')}>
+                Model <span style={{ opacity: sortField === 'model' ? 1 : 0.3 }}>{sortField === 'model' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
+              </th>
+              <th style={{ cursor: 'pointer' }} onClick={() => handleSort('year')}>
+                Year <span style={{ opacity: sortField === 'year' ? 1 : 0.3 }}>{sortField === 'year' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
+              </th>
+              <th style={{ cursor: 'pointer' }} onClick={() => handleSort('price')}>
+                Price <span style={{ opacity: sortField === 'price' ? 1 : 0.3 }}>{sortField === 'price' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
+              </th>
+              <th style={{ cursor: 'pointer' }} onClick={() => handleSort('status')}>
+                Status <span style={{ opacity: sortField === 'status' ? 1 : 0.3 }}>{sortField === 'status' ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}</span>
+              </th>
+              <th>Actions</th>
+            </tr>
+            <tr>
+              <td>
                 <input
                   type="text"
                   placeholder="Filter"
                   value={filterMake}
                   onChange={(e) => setFilterMake(e.target.value)}
-                  style={{marginLeft: '8px', width: '100px', padding: '4px'}}
+                  style={{width: '100%', padding: '4px', boxSizing: 'border-box'}}
                 />
-              </th>
-              <th>
-                Model
+              </td>
+              <td>
                 <input
                   type="text"
                   placeholder="Filter"
                   value={filterModel}
                   onChange={(e) => setFilterModel(e.target.value)}
-                  style={{marginLeft: '8px', width: '100px', padding: '4px'}}
+                  style={{width: '100%', padding: '4px', boxSizing: 'border-box'}}
                 />
-              </th>
-              <th>Year</th>
-              <th>
-                Price
-                <button 
-                  onClick={togglePriceSort}
-                  style={{marginLeft: '4px', background: 'none', border: 'none', color: 'white', cursor: 'pointer', fontSize: '14px', padding: '0'}}
-                  aria-label={filterPriceSort === 'asc' ? 'Sort price descending' : filterPriceSort === 'desc' ? 'Remove price sort' : 'Sort price ascending'}
-                >
-                  {filterPriceSort === 'asc' ? '↑' : filterPriceSort === 'desc' ? '↓' : '↕'}
-                </button>
-              </th>
-              <th>
-                Status
-                <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} style={{marginLeft: '8px', width: '120px'}}>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Filter"
+                  value={filterYear}
+                  onChange={(e) => setFilterYear(e.target.value)}
+                  style={{width: '100%', padding: '4px', boxSizing: 'border-box'}}
+                />
+              </td>
+              <td>
+                <input
+                  type="text"
+                  placeholder="Filter"
+                  value={filterPrice}
+                  onChange={(e) => setFilterPrice(e.target.value)}
+                  style={{width: '100%', padding: '4px', boxSizing: 'border-box'}}
+                />
+              </td>
+              <td>
+                <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} style={{width: '100%', padding: '4px', boxSizing: 'border-box'}}>
                   <option value="">All</option>
                   <option value="Available">Available</option>
                   <option value="Sold">Sold</option>
                 </select>
-              </th>
-              <th>Actions</th>
+              </td>
+              <td></td>
             </tr>
           </thead>
 
@@ -234,7 +280,7 @@ function CarsPage() {
                   <td>{car.make}</td>
                   <td>{car.model}</td>
                   <td>{car.year}</td>
-                  <td>${car.price}</td>
+                  <td>${car.price.toLocaleString()}</td>
                   <td>{car.status}</td>
                   <td>
                     <button onClick={() => handleUpdateCar(car)}>

@@ -5,6 +5,7 @@ import { useState, useContext } from "react";
 import { AuthContext } from '../context/AuthContext';
 import { UserContext } from '../context/UserContext';
 import { useNavigate } from "react-router";
+import '../css/Login.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
 function LogIn() {
